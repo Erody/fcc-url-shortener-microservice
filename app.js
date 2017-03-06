@@ -36,10 +36,21 @@ MongoClient.connect(url, (err, db) => {
 		const originalUrl = req.params[0];
 
 		if(validUrl.isWebUri(originalUrl)) {
-			const shortened = generateShortUrl();
-			const shortenedUrl = `${req.protocol}://${req.get('host')}/${shortened}`;
-			res.json({originalUrl, shortenedUrl});
-			collection.update({ originalUrl }, { originalUrl, shortenedUrl, shortened }, { upsert: true });
+			collection.findOne({originalUrl}, (err, item) => {
+				if(err) throw err;
+				if(item){
+					res.json({
+						originalUrl: item.originalUrl,
+						shortenedUrl: item.shortenedUrl,
+					});
+				} else {
+					const shortened = generateShortUrl();
+					const shortenedUrl = `${req.protocol}://${req.get('host')}/${shortened}`;
+					res.json({originalUrl, shortenedUrl});
+					collection.save({ originalUrl, shortenedUrl, shortened }, { upsert: true });
+				}
+			});
+
 		} else {
 			res.json({error: 'Invalid URL.'});
 		}
