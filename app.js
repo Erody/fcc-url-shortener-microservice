@@ -1,10 +1,11 @@
+require('dotenv').load();
 const express = require('express');
 const mongodb = require('mongodb');
 const crypto = require('crypto');
 const validUrl = require('valid-url');
 
 const port = process.env.PORT || 3000;
-const url = 'mongodb://localhost:27017/url_shortener';
+const url = process.env.MLAB_URLSHORTENER_URI;
 
 const MongoClient = mongodb.MongoClient;
 const app = express();

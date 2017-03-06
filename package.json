@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Erody/fcc-url-shortener-microservice#readme",
   "dependencies": {
     "crypto": "0.0.3",
+    "dotenv": "^4.0.0",
     "express": "^4.15.2",
     "mongodb": "^2.2.24",
     "valid-url": "^1.0.9"
