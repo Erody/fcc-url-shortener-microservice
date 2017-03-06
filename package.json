@@ -19,6 +19,7 @@
   "dependencies": {
     "crypto": "0.0.3",
     "express": "^4.15.2",
-    "mongodb": "^2.2.24"
+    "mongodb": "^2.2.24",
+    "valid-url": "^1.0.9"
   }
 }
