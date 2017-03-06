@@ -27,7 +27,7 @@ MongoClient.connect(url, (err, db) => {
 				res.redirect(item.originalUrl);
 				db.close();
 			} else {
-				res.json({error: 'Incorrect shortened URL.'})
+				res.json({error: 'Incorrect shortened URL.'});
 				db.close();
 			}
 
@@ -41,8 +41,9 @@ MongoClient.connect(url, (err, db) => {
 			const shortened = generateShortUrl();
 			const shortenedUrl = `${req.protocol}://${req.get('host')}/${shortened}`;
 			res.json({originalUrl, shortenedUrl});
-			collection.update({ originalUrl }, { originalUrl, shortenedUrl, shortened }, { upsert: true })
-			db.close();
+			collection.update({ originalUrl }, { originalUrl, shortenedUrl, shortened }, { upsert: true }).then(() => {
+				db.close();
+			});
 		} else {
 			res.json({error: 'Invalid URL.'});
 			db.close();
