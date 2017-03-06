@@ -23,10 +23,13 @@ MongoClient.connect(url, (err, db) => {
 		collection.findOne({shortened}, (err, item) => {
 			if(err) throw err;
 			if(item){
-				return res.redirect(item.originalUrl);
+				res.redirect(item.originalUrl);
+				db.close();
 			} else {
 				res.json({error: 'Incorrect shortened URL.'})
+				db.close();
 			}
+
 		});
 	});
 
@@ -38,10 +41,11 @@ MongoClient.connect(url, (err, db) => {
 			const shortenedUrl = `${req.protocol}://${req.get('host')}/${shortened}`;
 			res.json({originalUrl, shortenedUrl});
 			collection.update({ originalUrl }, { originalUrl, shortenedUrl, shortened }, { upsert: true })
+			db.close();
 		} else {
 			res.json({error: 'Invalid URL.'});
+			db.close();
 		}
-
 	});
 
 
